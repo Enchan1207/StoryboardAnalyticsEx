@@ -1,16 +1,19 @@
+//
+// Storyboardって具体的になにが書いてあるの?
+//
 import Foundation
 
-let url = URL(string: "https://api.github.com/users/Enchan1207")!
-let request = URLRequest(url: url)
-URLSession.shared.dataTask(with: request) { data, _, error in
-  if let data = data {
-    let responseText = String(data: data, encoding: .utf8)!
-    print(responseText)
-    exit(EXIT_SUCCESS)
-  } else {
-    print(error!.localizedDescription)
-    exit(EXIT_FAILURE)
-  }
-}.resume()
+// Resources/ からXMLファイルを読み込む
+print("load Storyboard.xml...")
+let XMLFileName = "sample"
+guard let XMLFileURL = Bundle.module.url(forResource: XMLFileName, withExtension: "xml"),
+      let XMLFileData = try? Data(contentsOf: XMLFileURL) else {exit(EXIT_FAILURE)}
 
-RunLoop.current.run() // or dispatchMain()
+// XMLパーサに通す
+print("parse...")
+let parser = StoryboardXMLParser(data: XMLFileData)
+parser.parse()
+
+exit(EXIT_SUCCESS)
+
+//RunLoop.current.run()

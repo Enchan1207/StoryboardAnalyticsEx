@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="net.enchan-lab.StoryboardAnalyserEx.sample.xml" version="3.0">
+    プレーンテキストです。
+    <elem id="" class="">
+        要素内のテキストです。
+        <p>
+            <b>
+                タグと要素が混合した
+            </b>
+            テキストです。
+        </p>
+    </elem>
+</document>

@@ -16,7 +16,7 @@ let package = Package(
             name: "StoryboardAnalyticsEx",
             dependencies: [],
             resources: [
-                .process("Storyboard.xml")
+                .process("Resources")
             ]
         ),
         .testTarget(
