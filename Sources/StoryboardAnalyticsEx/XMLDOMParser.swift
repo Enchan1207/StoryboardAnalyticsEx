@@ -1,5 +1,5 @@
 //
-//  StoryboardXMLParser.swift
+//  XMLDOMParser.swift
 //  
 //
 //  Created by EnchantCode on 2021/03/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class StoryboardXMLParser: NSObject {
+class XMLDOMParser: NSObject {
     private var parser: XMLParser!
     
     private var rootNode: Node? // ルートノード 全てのノードはこのノードのchildren
@@ -18,7 +18,7 @@ class StoryboardXMLParser: NSObject {
     
     init(data: Data){
         super.init()
-        
+
         self.parser = XMLParser(data: data)
         self.parser.delegate = self
         self.currentNode = rootNode
@@ -29,10 +29,11 @@ class StoryboardXMLParser: NSObject {
         self.failure = failure
         
         self.parser.parse()
+        
     }
 }
 
-extension StoryboardXMLParser: XMLParserDelegate {
+extension XMLDOMParser: XMLParserDelegate {
     
     func parserDidStartDocument(_ parser: XMLParser) {
         // start of document

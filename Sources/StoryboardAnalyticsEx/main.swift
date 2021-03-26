@@ -12,7 +12,7 @@ guard let XMLFileURL = Bundle.module.url(forResource: XMLFileName, withExtension
 // XMLパーサに通す
 let semaphore = DispatchSemaphore(value: 0)
 print("parse...")
-let parser: StoryboardXMLParser = StoryboardXMLParser(data: XMLFileData)
+let parser: XMLDOMParser = XMLDOMParser(data: XMLFileData)
 parser.parse { (node) in
     print(node)
     semaphore.signal()
