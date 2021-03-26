@@ -13,17 +13,21 @@ class StoryboardXMLParser: NSObject {
     private var rootNode: Node? // ルートノード 全てのノードはこのノードのchildren
     private var currentNode: Node! // 次にappendChildするべきノード
     
+    private var success: ((_ node: Node) -> Void)!
+    private var failure: ((_ error: Error) -> Void)!
+    
     init(data: Data){
         super.init()
         
         self.parser = XMLParser(data: data)
         self.parser.delegate = self
-        
-        //　初期ノード設定
         self.currentNode = rootNode
     }
     
-    func parse(){
+    func parse(success: @escaping (_ node: Node) -> Void, failure: @escaping (_ error: Error) -> Void){
+        self.success = success
+        self.failure = failure
+        
         self.parser.parse()
     }
 }
@@ -35,8 +39,7 @@ extension StoryboardXMLParser: XMLParserDelegate {
     }
     
     func parserDidEndDocument(_ parser: XMLParser) {
-        // end of document (should throw delegate?)
-        print(self.rootNode)
+        self.success(self.rootNode!)
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
@@ -56,7 +59,7 @@ extension StoryboardXMLParser: XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, foundComment comment: String) {
-        // Textを生成してpush
+        // Commentを生成してpush
         let newText = Comment(value: comment)
         self.currentNode?.appendChild(newText)
     }
@@ -68,10 +71,6 @@ extension StoryboardXMLParser: XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        // parse error
-    }
-    
-    func parser(_ parser: XMLParser, validationErrorOccurred validationError: Error) {
-        // validation error
+        failure(parseError as NSError)
     }
 }

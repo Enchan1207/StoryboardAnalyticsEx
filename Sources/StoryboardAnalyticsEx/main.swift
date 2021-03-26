@@ -11,10 +11,13 @@ guard let XMLFileURL = Bundle.module.url(forResource: XMLFileName, withExtension
 
 // XMLパーサに通す
 print("parse...")
-let parser = StoryboardXMLParser(data: XMLFileData)
-parser.parse()
+let parser: StoryboardXMLParser = StoryboardXMLParser(data: XMLFileData)
+parser.parse { (node) in
+    print(node)
+    exit(EXIT_SUCCESS)
+} failure: { (error) in
+    print(error)
+    exit(EXIT_FAILURE)
+}
 
-
-exit(EXIT_SUCCESS)
-
-//RunLoop.current.run()
+RunLoop.current.run()
