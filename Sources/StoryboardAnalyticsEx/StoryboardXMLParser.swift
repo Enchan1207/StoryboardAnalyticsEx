@@ -20,7 +20,6 @@ class StoryboardXMLParser: NSObject {
         self.parser.delegate = self
         
         //　初期ノード設定
-        self.rootNode = Element(tagName: "root")
         self.currentNode = rootNode
     }
     
@@ -45,6 +44,10 @@ extension StoryboardXMLParser: XMLParserDelegate {
         let newElement = Element(tagName: elementName, attributes: attributeDict)
         self.currentNode?.appendChild(newElement)
         self.currentNode = newElement
+        
+        if self.rootNode == nil{
+            self.rootNode = newElement
+        }
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
