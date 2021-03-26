@@ -10,6 +10,8 @@ import Foundation
 class Element: Node{
     private (set) public var uuid: NSUUID = NSUUID()
     var tagName: String
+    var attributes: [String: String]
+    
     var parent: Node?
     var children: [Node]
     public var description: String {
@@ -25,8 +27,6 @@ class Element: Node{
             return representedElement
         }
     }
-    
-    var attributes: [String: String]
         
     init(tagName: String, attributes: [String: String] = [:], children:[Node] = [], parent: Node? = nil){
         
