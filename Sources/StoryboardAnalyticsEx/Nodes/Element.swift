@@ -27,7 +27,7 @@ class Element: Node{
             return representedElement
         }
     }
-        
+    
     init(tagName: String, attributes: [String: String] = [:], children:[Node] = [], parent: Node? = nil){
         
         self.uuid = NSUUID()
@@ -36,5 +36,37 @@ class Element: Node{
         self.attributes = attributes
         self.children = children
         self.parent = parent
+    }
+}
+
+// MARK: - search functions
+extension Element{
+    
+    ///
+    func getElementBy(id: String) -> Element?{
+        return self.getElements(by: "id", value: id).first
+    }
+    
+    ///
+    func getElementsBy(className: String) -> [Element]{
+        return self.getElements(by: "class", value: className)
+    }
+    
+    ///
+    func getElementsBy(tagName: String) -> [Element]{
+        return self.getChildElements().filter({$0.tagName == tagName})
+    }
+    
+    ///
+    func getElementsBy(name: String) -> [Element]{
+        return self.getElements(by: "name", value: name)
+    }
+    
+    func getElements(by: String, value: String) -> [Element]{
+        return self.getChildElements().filter({$0.attributes[by] == value})
+    }
+    
+    private func getChildElements() -> [Element]{
+        return self.children.compactMap({$0 as? Element})
     }
 }
