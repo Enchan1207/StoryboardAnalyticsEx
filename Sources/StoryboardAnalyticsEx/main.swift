@@ -10,14 +10,24 @@ guard let XMLFileURL = Bundle.module.url(forResource: XMLFileName, withExtension
       let XMLFileData = try? Data(contentsOf: XMLFileURL) else {exit(EXIT_FAILURE)}
 
 // XMLパーサに通す
+let semaphore = DispatchSemaphore(value: 0)
 print("parse...")
 let parser: StoryboardXMLParser = StoryboardXMLParser(data: XMLFileData)
 parser.parse { (node) in
     print(node)
-    exit(EXIT_SUCCESS)
+    semaphore.signal()
 } failure: { (error) in
     print(error)
-    exit(EXIT_FAILURE)
+    semaphore.signal()
 }
+semaphore.wait()
 
-RunLoop.current.run()
+// webサイトから持ってきてパース
+//let task = URLSession.shared.dataTask(with: URL(string: "https://example.com")!) { (data, response, error) in
+//    print(response)
+//    semaphore.signal()
+//}
+//task.resume()
+//semaphore.wait()
+
+exit(EXIT_SUCCESS)
