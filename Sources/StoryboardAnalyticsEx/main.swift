@@ -4,8 +4,8 @@
 import Foundation
 
 // Resources/ からXMLファイルを読み込む
-let XMLFileName = "Storyboard"
-print("load \(XMLFileName).xml...")
+let XMLFileName = "CustomView"
+print("load \(XMLFileName)...")
 guard let XMLFileURL = Bundle.module.url(forResource: XMLFileName, withExtension: "xml"),
       let XMLFileData = try? Data(contentsOf: XMLFileURL) else {exit(EXIT_FAILURE)}
 
@@ -25,21 +25,16 @@ semaphore.wait()
 guard let root = root else{exit(EXIT_FAILURE)}
 
 // SBに含まれるConrtollerを抽出
-guard let scenes = root.getElementsBy(tagName: "scenes").first?.getElementsBy(tagName: "scene") else {exit(EXIT_FAILURE)}
-for scene in scenes{
-    print("-------------------------")
+guard let objects = root.getElementsBy(tagName: "objects").first?.getElementsBy(tagName: "view") else {exit(EXIT_FAILURE)}
+
+for object in objects{
+    print("  \(object.tagName) (id: \(object.attributes["id"]!))")
     
-    print("scene (id: \(scene.attributes["sceneID"]!))")
-    let objects = scene.getElementsBy(tagName: "objects").first!.getElements(by: "sceneMemberID", value: "viewController")
-    for object in objects{
-        print("  \(object.tagName) (id: \(object.attributes["id"]!))")
-        
-        // segue取得
-        guard let segues = object.getElementsBy(tagName: "connections").first?.getElementsBy(tagName: "segue") else {continue}
-        print("  segue:")
-        for segue in segues {
-            print("    kind: \(segue.attributes["kind"] ?? "none") destination: \(segue.attributes["destination"] ?? "none") (id: \(object.attributes["id"]!)) ")
-        }
+    // segue取得
+    guard let segues = object.getElementsBy(tagName: "connections").first?.getElementsBy(tagName: "segue") else {continue}
+    print("  segue:")
+    for segue in segues {
+        print("    kind: \(segue.attributes["kind"] ?? "none") destination: \(segue.attributes["destination"] ?? "none") (id: \(object.attributes["id"]!)) ")
     }
 }
 
