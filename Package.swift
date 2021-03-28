@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "StoryboardAnalyticsEx",
+    platforms: [
+        .macOS(.v10_13), .iOS(.v11)
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
